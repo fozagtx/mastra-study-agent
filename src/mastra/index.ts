@@ -7,6 +7,7 @@ import { LibSQLStore } from '@mastra/libsql';
 import { testAgent } from './agents/test-agent';
 import { researchAgent } from './agents/research-agent';
 import { summaryAgent } from './agents/summary-agent';
+import { textQuestionAgent } from './agents/text-question-agent';
 
 export const mastra = new Mastra({
   deployer: new VercelDeployer(),
@@ -14,6 +15,7 @@ export const mastra = new Mastra({
     testAgent,
     summaryAgent,
     researchAgent,
+    textQuestionAgent,
   },
   storage: new LibSQLStore({
     url: ':memory:',

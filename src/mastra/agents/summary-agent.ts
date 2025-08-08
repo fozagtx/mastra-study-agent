@@ -2,7 +2,6 @@ import { mistral } from '@ai-sdk/mistral';
 import { Agent } from '@mastra/core/agent';
 import { LibSQLStore } from '@mastra/libsql';
 import { searchTool } from '../tools/searchTool';
-import { genPdfTool } from "../tools/genPdfTool";
 import { Memory } from '@mastra/memory';
 import {
   createAnswerRelevancyScorer,
@@ -127,7 +126,6 @@ Always provide summaries that would allow someone to understand the document's c
   model: mistral('mistral-large-latest'),
   tools: {
     searchTool,
-    genPdfTool,
   },
   scorers: {
     faithfulness: {
