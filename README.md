@@ -39,40 +39,6 @@ BRAVE_API_KEY=your-brave-search-api-key
 pnpm dev
 ```
 
-## Usage Examples
-
-### Generate Questions from Text (direct tool)
-```typescript
-import { mastra } from './src/mastra';
-import { generateQuestionsFromTextTool } from './src/mastra/tools/questions-tool';
-
-const { questions, questionCount, success } = await generateQuestionsFromTextTool.execute({
-  context: {
-    extractedText: `Your study notes or any text content...`,
-    maxQuestions: 10,
-  },
-  mastra,
-});
-```
-
-### Real-time Web Research (agent with Brave Search)
-```typescript
-import { mastra } from './src/mastra';
-
-const researchAgent = mastra.getAgent('ResearchAgent');
-const response = await researchAgent.call([{ role: 'user', content: 'latest on transformer architectures' }]);
-console.log(response);
-```
-
-### Summarization (agent)
-```typescript
-import { mastra } from './src/mastra';
-
-const summaryAgent = mastra.getAgent('Summary Agent');
-const summary = await summaryAgent.call([{ role: 'user', content: 'Summarize: <paste your text here>' }]);
-console.log(summary);
-```
-
 ## Architecture
 
 ### Agents
@@ -92,12 +58,3 @@ console.log(summary);
 - General text input for question generation
 - Real-time web search via Brave Search API
 
-## Dependencies
-
-- `@mastra/core`: Core framework
-- `cheerio`: HTML parsing
-- `puppeteer`: Dynamic content extraction
-- `@ai-sdk/google`: AI model integration
-- `@ai-sdk/mistral`: Mistral models
-- `zod`: Schema validation for tools
-- `dotenv`: Env management
