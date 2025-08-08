@@ -1,4 +1,4 @@
-# Study Tool (Text QG + Web Research + Summaries)
+# Study Agent Studio (Text QG + Web Research + Summaries)
 
 A study-focused toolkit that:
 - Generates comprehensive questions from plain text
