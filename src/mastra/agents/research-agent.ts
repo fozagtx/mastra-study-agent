@@ -1,7 +1,6 @@
 import { mistral } from '@ai-sdk/mistral';
 import { Agent } from '@mastra/core/agent';
 import { searchTool } from '../tools/searchTool';
-import { genPdfTool } from "../tools/genPdfTool";
 import { LibSQLStore } from '@mastra/libsql';
 import { Memory } from '@mastra/memory';
 import {
@@ -80,7 +79,6 @@ Always be helpful, concise, and focused on maximizing the user’s access to rea
   model: mistral('mistral-large-latest'),
   tools: {
     searchTool,
-    genPdfTool,
   },
   scorers: {
     faithfulness: {
