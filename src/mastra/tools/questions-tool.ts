@@ -36,7 +36,7 @@ export const generateQuestionsFromTextTool = createTool({
     }
 
     try {
-      const agent = mastra?.getAgent('textQuestionAgent');
+      const agent = mastra?.getAgent('testAgent');
       if (!agent) {
         throw new Error('Question generator agent not found');
       }
