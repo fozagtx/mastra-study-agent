@@ -1,23 +1,25 @@
-# Study Tool with Web Crawler MCP Server
+# Study Tool (Text QG + Web Research + Summaries)
 
-A comprehensive study tool that helps students upload PDFs, generate questions, get summaries, and assess their work by crawling external documents like Google Docs and Notion.
+A study-focused toolkit that:
+- Generates comprehensive questions from plain text
+- Performs real-time web research via Brave Search
+- Produces concise summaries with optional live web context
 
 ## Features
 
-### 📚 PDF Processing
-- Upload PDFs and extract content
-- Generate comprehensive questions from PDF content
-- Create summaries of PDF documents
+### ❓ Question Generation (Text)
+- Provide raw text and get 5–10 high-quality questions
+- Balanced coverage: recall, comprehension, application, analysis
+- Token-aware: trims very large inputs
 
-### 🤖 AI-Powered Assessment
-- Generate questions from text content
-- Assess student work from external documents
-- Provide detailed feedback and scoring
+### 🔍 Real-time Web Research
+- Brave Search API integration for fresh results
+- Structured output for links and key findings
 
-### 🌐 Web Crawler MCP Server
-- Extract content from Google Docs, Notion, and other web pages
-- Support for both static and dynamic content
-- Intelligent content parsing and filtering
+### 📝 Summaries
+- Summarize documents or gathered web context
+- Focus on high-yield information (80/20)
+
 
 ## Quick Start
 
@@ -26,76 +28,76 @@ A comprehensive study tool that helps students upload PDFs, generate questions, 
 pnpm install
 ```
 
-2. **Start the development server:**
+2. **Environment variables:** Create `.env` from `.env.example` and set:
+```env
+MISTRAL_API_KEY=your-mistral-api-key
+BRAVE_API_KEY=your-brave-search-api-key
+```
+
+3. **Start the development server (if applicable):**
 ```bash
 pnpm dev
 ```
 
 ## Usage Examples
 
-### Generate Questions from PDF
+### Generate Questions from Text (direct tool)
 ```typescript
-import { generateQuestionsFromPdfWorkflow } from './src/mastra';
+import { mastra } from './src/mastra';
+import { generateQuestionsFromTextTool } from './src/mastra/tools/questions-tool';
 
-const result = await generateQuestionsFromPdfWorkflow.execute({
-  pdfUrl: 'https://example.com/document.pdf'
+const { questions, questionCount, success } = await generateQuestionsFromTextTool.execute({
+  context: {
+    extractedText: `Your study notes or any text content...`,
+    maxQuestions: 10,
+  },
+  mastra,
 });
 ```
 
-### Assess Student Work
+### Real-time Web Research (agent with Brave Search)
 ```typescript
-import { assessStudentWorkWorkflow } from './src/mastra';
+import { mastra } from './src/mastra';
 
-const assessment = await assessStudentWorkWorkflow.execute({
-  documentUrl: 'https://docs.google.com/document/d/your-doc-id',
-  originalQuestions: [
-    'What is the main concept discussed?',
-    'How does this relate to other topics?'
-  ],
-  subject: 'Physics',
-  assessmentType: 'comprehensive'
-});
+const researchAgent = mastra.getAgent('ResearchAgent');
+const response = await researchAgent.call([{ role: 'user', content: 'latest on transformer architectures' }]);
+console.log(response);
 ```
 
-### Web Crawler Tool
+### Summarization (agent)
 ```typescript
-import { webCrawlerTool } from './src/mastra';
+import { mastra } from './src/mastra';
 
-const content = await webCrawlerTool.execute({
-  url: 'https://notion.so/your-page',
-  contentType: 'full',
-  usePuppeteer: true // For dynamic content
-});
+const summaryAgent = mastra.getAgent('Summary Agent');
+const summary = await summaryAgent.call([{ role: 'user', content: 'Summarize: <paste your text here>' }]);
+console.log(summary);
 ```
 
 ## Architecture
 
 ### Agents
-- **PDF Question Agent**: Generates questions from PDF content
-- **PDF Summarization Agent**: Creates summaries of PDF documents
-- **Text Question Agent**: Generates questions from text content
-- **Content Assessment Agent**: Evaluates student work
+- **Test Agent**: Generates questions from provided text (`generateQuestionsFromTextTool`)
+- **ResearchAgent**: Real-time web research using Brave Search (`searchTool`)
+- **Summary Agent**: Summarizes content; can optionally use web search for fresh context
 
 ### Tools
-- **Download PDF Tool**: Downloads and processes PDF files
-- **Generate Questions Tool**: Creates questions from text
-- **Web Crawler Tool**: Extracts content from web pages
+- **Generate Questions Tool** (`questions-tool.ts`): Creates questions from text
+- **Search Tool** (`SearchTool.ts`): Brave Web Search API wrapper
 
 ### Workflows
-- **Generate Questions from PDF**: Complete workflow for PDF processing
-- **Assess Student Work**: Evaluates work from external documents
+- This template favors direct tool and agent usage rather than predefined workflows.
 
 ## Supported Platforms
 
-- **Google Docs**: Full content extraction
-- **Notion**: Page content and structure
-- **General Web Pages**: Text content extraction
-- **PDF Documents**: Content parsing and analysis
+- General text input for question generation
+- Real-time web search via Brave Search API
 
 ## Dependencies
 
 - `@mastra/core`: Core framework
 - `cheerio`: HTML parsing
 - `puppeteer`: Dynamic content extraction
-- `pdf2json`: PDF processing
 - `@ai-sdk/google`: AI model integration
+- `@ai-sdk/mistral`: Mistral models
+- `zod`: Schema validation for tools
+- `dotenv`: Env management

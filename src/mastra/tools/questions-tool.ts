@@ -28,10 +28,9 @@ export const generateQuestionsFromTextTool = createTool({
         success: false,
       };
     }
-
     // Simple check for very large documents
     if (extractedText.length > MAX_TEXT_LENGTH) {
-      console.warn('⚠️ Document is very large. Consider using a smaller PDF to avoid token limits.');
+      console.warn('⚠️ Text is very large. Consider using a smaller excerpt to avoid token limits.');
       console.warn(`⚠️ Using first ${MAX_TEXT_LENGTH} characters only...`);
     }
 
@@ -44,7 +43,7 @@ export const generateQuestionsFromTextTool = createTool({
       const streamResponse = await agent.stream([
         {
           role: 'user',
-          content: `Generate comprehensive questions based on the following content extracted from a PDF.
+          content: `Generate comprehensive questions based on the following content extracted from a document.
 Please create questions that test understanding, analysis, and application of the content.
 Generate up to ${maxQuestions} questions:
 
@@ -83,7 +82,7 @@ ${extractedText.substring(0, MAX_TEXT_LENGTH)}`,
 
       // Check if it's a token limit error
       if (errorMessage.includes('context length') || errorMessage.includes('token')) {
-        console.error('💡 Tip: Try using a smaller PDF file. Large documents exceed the token limit.');
+        console.error('💡 Tip: Try using a smaller input. Large documents can exceed the token limit.');
       }
 
       return {

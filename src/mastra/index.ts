@@ -21,9 +21,4 @@ export const mastra = new Mastra({
     name: 'Mastra',
     level: 'info',
   }),
-  server: {
-    experimental_auth: new MastraJwtAuth({
-      secret: "mySuperSecretKey123!@#"
-    }),
-  },
 });
