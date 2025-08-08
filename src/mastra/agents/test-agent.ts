@@ -10,6 +10,7 @@ import {
 } from '@mastra/evals/scorers/llm';
 
 import { generateQuestionsFromTextTool } from '../tools/questions-tool';
+import { genPdfTool } from "../tools/genPdfTool";
 
 const memory = new Memory({
   storage: new LibSQLStore({ url: 'file:../mastra.db' }),
@@ -107,7 +108,8 @@ The questions should help someone thoroughly understand and engage with the sour
   `,
   model: mistral('mistral-large-latest'),
   tools: {
-    generateQuestionsFromTextTool
+    generateQuestionsFromTextTool,
+    genPdfTool,
   },
   scorers: {
     faithfulness: {
