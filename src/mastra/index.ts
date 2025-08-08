@@ -10,7 +10,6 @@ import { summaryAgent } from './agents/summary-agent';
 import { textQuestionAgent } from './agents/text-question-agent';
 
 export const mastra = new Mastra({
-  deployer: new VercelDeployer(),
   agents: {
     testAgent,
     summaryAgent,
